@@ -1,14 +1,26 @@
-import { createStore } from 'vuex'
-import state from './state'
-import * as actions from './actions'
-import * as mutations from './mutations'
-import * as getters from './getters'
-
-const store = createStore({
-  state,
-  actions,
-  mutations,
-  getters,
-})
-
-export default store;
+import { createStore } from "vuex";
+import axios from "axios";
+export default createStore({
+  state: {
+    dogs: [],
+  },
+  getters: {
+    getDogs: (state) => state.dogs,
+  },
+  actions: {
+    async fetchDogs({ commit }) {
+      try {
+        const data = await axios.get("https://dog.ceo/api/breed/hound/images");
+        commit("SET_DOGS", data.data);
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      }
+    },
+  },
+  mutations: {
+    SET_DOGS(state, dogs) {
+      state.dogs = dogs;
+    },
+  },
+});

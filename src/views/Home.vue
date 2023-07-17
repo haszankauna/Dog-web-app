@@ -1,23 +1,31 @@
 <template>
-  <div class="p-8 pb-0 text-orange-500">
-    <h1 class="text-4xl font-bold mb-4">Random Dogs</h1>
+  <div>
+    <div class="p-8 pb-0 text-orange-500">
+      <h1 class="text-4xl font-bold mb-4">Random Dogs</h1>
+    </div>
+    <!-- {{ users.message }} -->
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4" v-if="dogs.message">
+      <div class="rounded-2 m-1 bg-white drop-shadow-md p-2" v-for="(dog, index) in dogs.message.splice(0, 100)" :key="index">
+        <div   class="w-full">
+          <img :src="dog" alt="" class="w-100 object-cover" style="height: 300px" />
+        </div>
+      </div>
+    </div>
   </div>
-  <Dogss :dogs="dogs" />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import store from "../store";
-import Dogs from "../components/Dogs.vue";
-import axiosClient from "../axiosClient.js";
-
-const dogs = ref([]);
-
-onMounted(async () => {
-  for (let i = 0; i < 10; i++) {
-    axiosClient
-      .get(`random.php`)
-      .then(({ data }) => dogs.value.push(data.dogs[0]));
-  }
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+const msg = ref("Welcome to my Vuex Store");
+const getDogs = computed(() => {
+  return store.getters.getDogs;
+});
+const dogs = computed(() => {
+  return store.state.dogs;
+});
+onMounted(() => {
+  store.dispatch("fetchDogs");
 });
 </script>

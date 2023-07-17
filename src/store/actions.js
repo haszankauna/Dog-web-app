@@ -14,7 +14,7 @@ export function searchDogsByLetter({ commit }, letter) {
     })
 }
 
-export function searchDogsByIngredient({ commit }, ing) {
+export function searchDogsByBreed({ commit }, ing) {
   axiosClient.get(`filter.php?i=${ing}`)
     .then(({ data }) => {
       commit('setDogsByBreed', data.dogs)

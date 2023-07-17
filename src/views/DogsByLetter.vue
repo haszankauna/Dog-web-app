@@ -32,6 +32,6 @@ watch(route, () => {
 });
 
 onMounted(() => {
-  store.dispatch("searchDogsByLetter", route.params.letter);
+  store.dispatch("Letter", route.params.letter);
 });
 </script>
